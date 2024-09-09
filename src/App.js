@@ -7,7 +7,7 @@ import { List } from './components/ToDoListComponent/List';
 export const App = () => {
 	return (
 		<div className={styles.App}>
-			<h1>To Do App</h1>
+			<h1 className={styles.MainHeading}>To Do App</h1>
 			<Input />
 			<List />
 		</div>

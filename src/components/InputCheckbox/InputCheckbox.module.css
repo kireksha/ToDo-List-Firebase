@@ -1,0 +1,16 @@
+input:checked + span{
+    text-decoration: line-through;
+}
+
+.CheckboxWrapper {
+    margin: 0 0 10px;
+}
+
+.Checkbox {
+    margin: 0 10px 0 0;
+}
+
+.LabelCheckboxWrapper {
+    display: flex;
+    justify-items: center;
+}
