@@ -1,16 +1,41 @@
-input:checked + span{
+.CheckboxBtn {
+    position: relative;
+    margin: 0 10px 0 0;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #333;
+}
+
+.CheckboxBtn::before {
+    content: 'x';
+    font-size: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .1s ease-in-out;
+    color: black;
+}
+
+.CheckboxBtn.checked::before {
+    font-size: 25px;
+}
+
+.CheckboxBtn:hover::before {
+    opacity: .5;
+    color: #28a745;
+    font-size: 25px;
+}
+
+.CheckboxBtn.checked:hover::before {
+    color: black;
+    opacity: unset;
+}
+
+.CheckboxBtn.checked+span {
     text-decoration: line-through;
 }
 
-.CheckboxWrapper {
-    margin: 0 0 10px;
-}
-
-.Checkbox {
+.TodoTitle {
     margin: 0 10px 0 0;
-}
-
-.LabelCheckboxWrapper {
-    display: flex;
-    justify-items: center;
 }

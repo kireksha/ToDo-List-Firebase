@@ -38,6 +38,16 @@
     font-style: italic;
 }
 
+@font-face {
+    font-family: "A.Blueberry Foxhound.Alen.Rus";
+    src:
+        local("A.Blueberry Foxhound.Alen.Rus"),
+        url("../fonts/A.Blueberry\ Foxhound.Alen_.Rus__0.woff2") format(woff2),
+        url("../fonts/A.Blueberry\ Foxhound.Alen_.Rus__0.woff") format(woff);
+    font-weight: 400;
+    font-style: normal;
+}
+
 * {
     background-color: transparent;
 }
@@ -47,4 +57,18 @@ body {
     font-weight: 400;
     font-style: normal;
     font-size: 32px;
+    background-color: #e4d7ce;
+}
+
+button {
+    transition: opacity .1s ease-in-out;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .8;
+}
+
+button:disabled:hover {
+    opacity: 1;
 }
