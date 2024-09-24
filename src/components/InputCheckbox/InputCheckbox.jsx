@@ -1,26 +1,19 @@
-import styles from './InputCheckbox.module.css';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './InputCheckbox.module.css';
 
-export const Checkbox = ({ label, todoID, setUpdateList, updateList }) => {
+export const Checkbox = ({ label, todoID }) => {
 	const [check, setCheck] = useState(false);
-
-	const handleCheckbox = () => {
-		setCheck(true)
-		setTimeout(() => {
-			fetch(`http://localhost:3002/todos/${todoID}`, {
-				method: 'DELETE'
-			})
-				.then(() => setUpdateList(!updateList))
-		}, 1000)
-	}
 
 	return (
 		<>
 			<button
 				className={`${styles.CheckboxBtn} ${check && styles.checked}`}
-				onClick={handleCheckbox}>
+				onClick={() => setCheck(!check)}>
 			</button>
-			<span className={styles.TodoTitle}>{label}</span>
+			<Link className={styles.TitleLink} to={`/task/${todoID}`}>
+				<span className={styles.TodoTitle}>{label}</span>
+			</Link>
 		</>
 	);
 };

@@ -32,7 +32,7 @@
     opacity: unset;
 }
 
-.CheckboxBtn.checked+span {
+.CheckboxBtn.checked+a {
     text-decoration: line-through;
 }
 
