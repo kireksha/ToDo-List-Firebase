@@ -23,7 +23,7 @@ export const Input = ({ ...props }) => {
             headers: { 'Content-Type': 'application/json;charset=utf-8' },
             body: JSON.stringify({
                 title: inputValue,
-                shortTitle: inputValue.toString().slice(0, 5) + '...',
+                shortTitle: inputValue.toString().length > 5 ? inputValue.toString().slice(0, 5) + '...' : inputValue.toString(),
                 id: Date.now().toString(),
             })
         })

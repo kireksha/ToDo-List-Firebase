@@ -1,9 +1,12 @@
 import './reset.css';
 import './index.css';
 import styles from './App.module.css';
-import { List } from '../src/components/ToDoListComponent/List';
-import { Input } from '../src/components/InputComponent/Input';
+import { List } from './components/ToDoListComponent/List';
+import { Input } from './components/InputComponent/Input';
 import { useState, useEffect } from 'react';
+import { NotFound } from './components/NotFound/NotFound';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { OpenTask } from './components/OpenTask/OpenTask';
 
 export const App = () => {
 	const [updateList, setUpdateList] = useState(true);
@@ -76,6 +79,22 @@ export const App = () => {
 				updateList={updateList}
 				setUpdateList={setUpdateList}
 			/>
+			<Routes>
+				<Route path='/' />
+				<Route
+					path="/task/:id"
+					element={
+						<OpenTask
+							handleUpdate={handleUpdate}
+							listOfTodos={listOfTodos}
+							updateList={updateList}
+							setUpdateList={setUpdateList}
+						/>
+					}
+				/>
+				<Route path="/404" element={<NotFound />} />
+				<Route path="*" element={<Navigate to="/404" />} />
+			</Routes>
 		</div>
 	);
 };

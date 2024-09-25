@@ -1,8 +1,7 @@
 import styles from './List.module.css';
 import { useState, useEffect } from 'react';
 import { Checkbox } from "../InputCheckbox/InputCheckbox";
-import { Routes, Route, useMatch } from 'react-router-dom';
-import { OpenTask } from '../OpenTask/OpenTask';
+import { useMatch } from 'react-router-dom';
 
 export const List = ({
     handleSearch,
@@ -11,10 +10,7 @@ export const List = ({
     listOfTodos,
     updateError,
     todosArray,
-    isLoading,
-    handleUpdate,
-    updateList,
-    setUpdateList }) => {
+    isLoading }) => {
 
     const [isSort, setIsSort] = useState(false);
     const urlMatchData = useMatch('/task/:id');
@@ -45,18 +41,7 @@ export const List = ({
             {
                 urlMatchData
                     ?
-                    <>
-                        <Routes>
-                            <Route path="/task/:id"
-                                element={<OpenTask
-                                    handleUpdate={handleUpdate}
-                                    listOfTodos={listOfTodos}
-                                    updateList={updateList}
-                                    setUpdateList={setUpdateList}
-                                />}
-                            />
-                        </Routes>
-                    </>
+                    <></>
                     :
                     <>
                         <input
