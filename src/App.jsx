@@ -1,100 +1,88 @@
 import './reset.css';
 import './index.css';
 import styles from './App.module.css';
-import { List } from './components/ToDoListComponent/List';
-import { Input } from './components/InputComponent/Input';
 import { useState, useEffect } from 'react';
-import { NotFound } from './components/NotFound/NotFound';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { OpenTask } from './components/OpenTask/OpenTask';
+import { Todo, ControlPanel } from './components';
+import { readTodos, updateTodo, deleteTodo, createTodo } from './api';
+import { addTodoInTodos, findTodo, removeTodoInTodos, setTodoInTodos } from './utils';
+import { NEW_TODO_ID } from './constants';
 
 export const App = () => {
-	const [updateList, setUpdateList] = useState(true);
-	const [inputValue, setInputValue] = useState('');
-	const [isSearch, setIsSearch] = useState(false);
-	const [listOfTodos, setListOfTodos] = useState([]);
-	const [updateError, setUpdateError] = useState(false);
-	const [todosArray, setTodosArray] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const [todos, setTodos] = useState([]);
+	const [searchPhrase, setSearchPhrase] = useState('');
+	const [isSorting, setIsSorting] = useState(false);
+
+	const onTodoAdd = () => {
+		setTodos(addTodoInTodos(todos));
+	};
+
+	const onTodoSave = (todoID) => {
+		const { title, completed } = findTodo(todos, todoID) || {};
+		if (todoID === NEW_TODO_ID) {
+			createTodo({ title, completed }).then((todo) => {
+				let updatedTodos = setTodoInTodos(todos, {
+					id: NEW_TODO_ID,
+					isEditing: false
+				});
+				updatedTodos = removeTodoInTodos(updatedTodos, NEW_TODO_ID);
+				updatedTodos = addTodoInTodos(updatedTodos, todo);
+				setTodos(updatedTodos)
+			});
+		} else {
+			updateTodo({ id: todoID, title }).then(() => {
+				setTodos(setTodoInTodos(todos, { id: todoID, isEditing: false }));
+			});
+		};
+
+	};
+
+	const onTodoRemove = (id) => {
+		deleteTodo(id).then(() => setTodos(removeTodoInTodos(todos, id)));
+	};
+
+	const onTodoEdit = (id) => {
+		setTodos(setTodoInTodos(todos, { id, isEditing: true }));
+	};
+
+	const onTodoTitleChange = (id, newTitle) => {
+		setTodos(setTodoInTodos(todos, { id, title: newTitle }));
+	};
+
+	const onCompletedChange = (id, newCompleted) => {
+		updateTodo({ id, completed: newCompleted }).then(() => {
+			setTodos(setTodoInTodos(todos, { id, completed: newCompleted }));
+		});
+	};
 
 	useEffect(() => {
-		setIsLoading(true);
-
-		fetch('http://localhost:3002/todos')
-			.then((response) => response.json())
-			.then((json) => {
-				setTodosArray(json);
-				setListOfTodos(json);
-			})
-			.finally(() => {
-				setIsLoading(false);
-				setUpdateError(false);
-			});
-	}, [updateList]);
-
-	const handleUpdate = (e) => {
-		if (!inputValue) {
-			setUpdateError(true);
-		} else {
-			setUpdateError(false);
-			fetch(`http://localhost:3002/todos/${e.id}`, {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json;charset=utf-8' },
-				body: JSON.stringify({
-					title: inputValue,
-					shortTitle: inputValue.toString().slice(0, 5) + '...',
-				}),
-			}).finally(() => setUpdateList(!updateList));
-		}
-	};
-
-	const handleSearch = (e) => {
-		const newArr = todosArray.filter((d) => {
-			let searchValue = d.title.toLowerCase();
-			return searchValue.indexOf(e.target.value) !== -1;
-		});
-		setListOfTodos(newArr);
-	};
+		readTodos(searchPhrase, isSorting).then((loadedTodos) =>
+			setTodos(loadedTodos.reverse()),
+		);
+	}, [searchPhrase, isSorting]);
 
 	return (
 		<div className={styles.App}>
-			<h1 className={styles.MainHeading}>To Do App</h1>
-			<Input
-				updateList={updateList}
-				setUpdateList={setUpdateList}
-				inputValue={inputValue}
-				setInputValue={setInputValue}
-				isSearch={isSearch}
-				setIsSearch={setIsSearch}
+			<ControlPanel
+				onTodoAdd={onTodoAdd}
+				onSearch={setSearchPhrase}
+				onSorting={setIsSorting}
 			/>
-			<List
-				handleSearch={handleSearch}
-				isSearch={isSearch}
-				setListOfTodos={setListOfTodos}
-				listOfTodos={listOfTodos}
-				updateError={updateError}
-				todosArray={todosArray}
-				isLoading={isLoading}
-				handleUpdate={handleUpdate}
-				updateList={updateList}
-				setUpdateList={setUpdateList}
-			/>
-			<Routes>
-				<Route path='/' />
-				<Route
-					path="/task/:id"
-					element={
-						<OpenTask
-							handleUpdate={handleUpdate}
-							listOfTodos={listOfTodos}
-							updateList={updateList}
-							setUpdateList={setUpdateList}
-						/>
-					}
-				/>
-				<Route path="/404" element={<NotFound />} />
-				<Route path="*" element={<Navigate to="/404" />} />
-			</Routes>
+			<div>
+				{todos.map(({ id, title, completed, isEditing = false }) => (
+					<Todo
+						key={id}
+						id={id}
+						title={title}
+						completed={completed}
+						onSave={() => onTodoSave(id)}
+						onTitleChange={(newTitle) => onTodoTitleChange(id, newTitle)}
+						onCompletedChange={(newCompleted) => onCompletedChange(id, newCompleted)}
+						onRemove={() => onTodoRemove(id)}
+						onEdit={() => onTodoEdit(id)}
+						isEditing={isEditing}
+					/>
+				))}
+			</div>
 		</div>
-	);
-};
+	)
+}
