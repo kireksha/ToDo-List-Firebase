@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button } from '../../../button/button';
 import styles from './sorting.module.css';
+import { AppContext } from '../../../../context';
 
-export const Sorting = ({ onSorting }) => {
-	const [isEnabled, setIsEnabled] = useState(false);
+export const Sorting = () => {
+	const { isSorting, setIsSorting } = useContext(AppContext);
 
 	const onChange = ({ target }) => {
-		setIsEnabled(target.checked);
-		onSorting(target.checked);
+		setIsSorting(target.checked);
 	};
 
 	return (
@@ -16,7 +16,7 @@ export const Sorting = ({ onSorting }) => {
 				className={styles.Checkbox}
 				id="sorting-button"
 				type="checkbox"
-				checked={isEnabled}
+				checked={isSorting}
 				onChange={onChange}
 			/>
 			<label className={styles.Label} htmlFor="sorting-button">
