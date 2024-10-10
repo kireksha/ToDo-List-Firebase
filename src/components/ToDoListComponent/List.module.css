@@ -1,0 +1,93 @@
+.ToDoItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.BtnUpdate {
+    padding: 5px;
+    border-radius: 5px;
+    border-color: #6c757d;
+    color: #6c757d;
+    transition: all .2s ease-in-out;
+    font-size: 25px;
+}
+
+.BtnUpdate:hover {
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.Loader {
+    width: 50px;
+    height: 50px;
+    border-left: 2px solid grey;
+    border-right: 2px solid grey;
+    border-bottom: 2px solid grey;
+    border-radius: 100%;
+    animation: 1s infinite linear rotation;
+}
+
+.UpdateError {
+    color: red;
+}
+
+.UpdateError+li {
+    margin-top: 15px;
+}
+
+.SearchInput {
+    display: block;
+    width: 0;
+    height: 0;
+    border: none;
+    margin: 0;
+    transition: all .2s ease-in-out;
+    padding: 5px;
+}
+
+.ToDoList {
+    margin: 0;
+}
+
+.SearchInput.isActive {
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px #333 solid;
+    margin: 20px 0 20px;
+}
+
+.SortBtn {
+    margin: 0 0 10px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 25px;
+    transition: background-color .2s ease-in-out, box-shadow .2s ease-in-out, transform .1s ease-in-out;
+}
+
+.SortBtn>span {
+    display: block;
+    margin: 0;
+    padding: 0;
+    font-family: "A.Blueberry Foxhound.Alen.Rus", sans-serif;
+    font-size: 30px;
+}
+
+.SortBtn:active {
+    transform: translate(-1px, -1px);
+}
+
+.SortBtn.clicked {
+    background-color: rgba(128, 128, 128, .8);
+    box-shadow: -5px 5px 5px grey;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}

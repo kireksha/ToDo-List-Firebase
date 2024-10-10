@@ -1,8 +1,10 @@
 .App {
-	width: 50vw;
-	margin: 50px auto;
-	border: 2px solid #444;
-	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	justify-items: center;
+	margin: 0 auto;
 }
 
 .MainHeading {
