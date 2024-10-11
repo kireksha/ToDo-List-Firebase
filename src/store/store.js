@@ -1,18 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { rootReducer } from '../reducers/rootReducer';
-
-const thunk = ({ dispatch, getState }) => {
-	return (next) => {
-		return (action) => {
-			console.log('action', typeof action);
-			if (typeof action === 'function') {
-				return action(dispatch, getState);
-			} else {
-				return next(action);
-			}
-		};
-	};
-};
+import { thunk } from 'redux-thunk';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

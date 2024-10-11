@@ -2,7 +2,7 @@ import styles from './List.module.css';
 import { useState, useEffect } from 'react';
 import { Checkbox } from "../InputCheckbox/InputCheckbox"
 import { useDispatch, useSelector } from 'react-redux';
-import { selectInputValue, selectIsLoading, selectIsSearch, selectTodos, selectUpdateError } from '../../selects';
+import { selectInputValue, selectIsLoading, selectIsSearch, selectSearchPhrase, selectTodos, selectUpdateError } from '../../selects';
 import { getTodos } from '../../reducers/todoReducer';
 
 export const List = () => {
@@ -12,6 +12,7 @@ export const List = () => {
     const updateError = useSelector(selectUpdateError);
     const isSearch = useSelector(selectIsSearch);
     const inputValue = useSelector(selectInputValue);
+    const searchPhrase = useSelector(selectSearchPhrase);
     const [isSort, setIsSort] = useState(false);
 
     useEffect(() => {
@@ -42,12 +43,14 @@ export const List = () => {
     }, [isSort])
 
     const handleSearch = (e) => {
-        const newArr = todos.filter((d) => {
-            let searchValue = d.title.toLowerCase();
-            return searchValue.indexOf(e.target.value) !== -1;
-        })
-        dispatch({ type: 'SET_TODO', payload: newArr })
+        const searchValue = e.target.value.toLowerCase()
+        dispatch({ type: 'SET_SEARCH_PHRASE', payload: searchValue })
     }
+
+    const filteredTodos = todos.filter((todo) => {
+        return todo.title.toLowerCase().includes(searchPhrase.toLowerCase())
+    });
+
 
     const handleSort = (data) => {
         if (isSort) {
@@ -55,9 +58,9 @@ export const List = () => {
             sortedData = [...data].sort((a, b) => {
                 return a.title.localeCompare(b.title);
             })
-            dispatch({ type: 'SET_TODO', payload: sortedData })
+            return sortedData
         } else {
-            dispatch({ type: 'SET_TODO', payload: data })
+            return data
         }
     }
 
@@ -82,7 +85,7 @@ export const List = () => {
             {
                 isLoading
                     ? <div className={styles.Loader}></div>
-                    : todos.map((todo) => {
+                    : handleSort(filteredTodos).map((todo) => {
                         return (
                             <li
                                 className={styles.ToDoItem}

@@ -10,7 +10,6 @@ export const Input = () => {
     const handleSubmit = (event) => {
         event.preventDefault()
         const newID = Date.now().toString()
-        dispatch({ type: 'ADD_TODO', payload: { id: newID, title: inputValue } })
         fetch('http://localhost:3002/todos', {
             method: "POST",
             headers: {
@@ -18,6 +17,7 @@ export const Input = () => {
             },
             body: JSON.stringify({ id: newID, title: inputValue })
         })
+            .then(() => dispatch({ type: 'ADD_TODO', payload: { id: newID, title: inputValue } }))
     }
 
     return (

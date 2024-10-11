@@ -2,6 +2,7 @@ const initialState = {
 	updateError: '',
 	isSearch: false,
 	inputValue: '',
+	searchPhrase: '',
 };
 export const inputSearchReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
@@ -9,6 +10,11 @@ export const inputSearchReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				isSearch: payload,
+			};
+		case 'SET_SEARCH_PHRASE':
+			return {
+				...state,
+				searchPhrase: payload,
 			};
 		case 'SET_INPUT_VALUE':
 			return {

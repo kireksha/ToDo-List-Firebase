@@ -9,11 +9,10 @@ export const Checkbox = ({ label, todoID }) => {
 	const handleCheckbox = (id) => {
 		setCheck(true)
 		setTimeout(() => {
-			dispatch({
+			fetch(`http://localhost:3002/todos/${id}`, { method: 'DELETE' }).then(() => dispatch({
 				type: 'DELETE_TODO',
 				payload: id,
-			})
-			fetch(`http://localhost:3002/todos/${id}`, { method: 'DELETE' })
+			}))
 		}, 1000)
 	}
 

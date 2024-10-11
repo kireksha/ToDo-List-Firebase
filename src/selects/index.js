@@ -4,3 +4,4 @@ export * from './selectIsLoading';
 export * from './selectIsSearch';
 export * from './selectTodos';
 export * from './selectUpdateError';
+export * from './selectSearchPhrase';
